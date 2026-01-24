@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from ..models.convo import Convo
 from ..schemas.convo import ConvoCreate
 
-class UserRepo:
+class ConvoRepo:
     def create(self, db: Session, data: ConvoCreate) -> Convo | None:
         convo = Convo(name = data.name, user_id = data.user_id)
         db.add(convo)

@@ -1,11 +1,11 @@
 from uuid import UUID
 from sqlalchemy.orm import Session
 from ..models.msg import Msg
-from ..schemas.msg import MsgCreate
+from ..schemas.msg import MsgCreate, MsgRole
 
-class UserRepo:
+class MsgRepo:
     def create(self, db: Session, data: MsgCreate) -> Msg | None:
-        msg = Msg(user_id = data.user_id, convo_id = data.convo_id)
+        msg = Msg(user_id = data.user_id, convo_id = data.convo_id, role = data.role, content= data.content)
         db.add(msg)
         db.commit()
         db.refresh(msg)
