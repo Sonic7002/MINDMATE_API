@@ -1,6 +1,7 @@
 from uuid import UUID
 from datetime import datetime
 from pydantic import BaseModel, ValidationInfo
+from typing import Optional
 
 class ConvoCreate(BaseModel):
     name : str
@@ -18,3 +19,6 @@ class ConvoRead(BaseModel):
     user_id: UUID
     name: str
     created_at: datetime
+
+class ConvoPatch(BaseModel):
+    name: Optional[str] = None
