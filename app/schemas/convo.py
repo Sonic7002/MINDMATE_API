@@ -5,7 +5,6 @@ from typing import Optional
 
 class ConvoCreate(BaseModel):
     name : str
-    user_id: UUID
 
     @ValidationInfo("name")
     @classmethod
