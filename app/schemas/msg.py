@@ -9,8 +9,6 @@ class MsgRole(str, Enum):
     USER = "USER"
 
 class MsgCreate(BaseModel):
-    user_id: UUID
-    convo_id: UUID
     role: MsgRole
     content: str
 
