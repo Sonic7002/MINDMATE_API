@@ -15,7 +15,6 @@ class ConvoCreate(BaseModel):
     
 class ConvoRead(BaseModel):
     id: UUID
-    user_id: UUID
     name: str
     created_at: datetime
 

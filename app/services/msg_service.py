@@ -4,6 +4,7 @@ from ..models.msg import Msg
 from ..repos.msg_repo import MsgRepo
 from ..repos.convo_repo import ConvoRepo
 from ..schemas.msg import MsgCreate, MsgRole
+from ..ai.response import generate_response
 
 class MsgService:
     def __init__(self, msg_repo: MsgRepo, convo_repo: ConvoRepo):
@@ -14,10 +15,22 @@ class MsgService:
         convo = self.convo_repo.get_by_id(db, convo_id)
         if not convo or convo.user_id != user_id:
             raise ValueError("Invalid convo id")
-        return self.repo.create(db, user_id, convo_id, data)
+        if not data.role == MsgRole.USER:
+            raise ValueError("Invalid Role")
+        self.msg_repo.create(db, user_id, convo_id, data)
 
-    def get_msgs(self, convo_id: UUID, db: Session) -> list[Msg]:
-        return self.repo.get_by_convo_id(db, convo_id)
+        last_5_msgs = self.get_5_msgs(user_id, convo_id, db)
+        response = generate_response(last_5_msgs)
+        return self.msg_repo.create(db, user_id, convo_id, response)
 
-    def get_5_msgs(self, convo_id: UUID, db: Session) -> list[Msg]:
-        return self.repo.get_by_convo_id_5(db, convo_id)
+    def get_msgs(self, user_id: UUID, convo_id: UUID, db: Session) -> list[Msg]:
+        convo = self.convo_repo.get_by_id(db, convo_id)
+        if not convo or convo.user_id != user_id:
+            raise ValueError("Invalid convo id")
+        return self.msg_repo.get_by_convo_id(db, convo_id)
+
+    def get_5_msgs(self, user_id: UUID, convo_id: UUID, db: Session) -> list[Msg]:
+        convo = self.convo_repo.get_by_id(db, convo_id)
+        if not convo or convo.user_id != user_id:
+            raise ValueError("Invalid convo id")
+        return self.msg_repo.get_by_convo_id(db, convo_id)

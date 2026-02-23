@@ -15,5 +15,5 @@ def create_msg(data: MsgCreate, convo_id: UUID, current_user: User = Depends(get
     return service.create_msg(current_user.id, convo_id, data, db)
 
 @router.get("/", response_model=list[MsgRead])
-def get_all_convos(current_user: User = Depends(get_current_user), service: MsgService = Depends(get_msg_service), db: Session = Depends(get_db)):
-    return service.get_convos(current_user.id, db)
+def get_all_msgs(convo_id: UUID, current_user: User = Depends(get_current_user), service: MsgService = Depends(get_msg_service), db: Session = Depends(get_db)):
+    return service.get_msgs(current_user.id, convo_id, db)

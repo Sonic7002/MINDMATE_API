@@ -4,9 +4,8 @@ from pydantic import BaseModel, field_validator, ValidationInfo
 from enum import Enum
 
 class MsgRole(str, Enum):
-    SYSTEM = "SYSTEM"
-    ASSISTANT = "ASSISTANT"
-    USER = "USER"
+    MODEL = "model"
+    USER = "user"
 
 class MsgCreate(BaseModel):
     role: MsgRole

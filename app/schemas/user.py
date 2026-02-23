@@ -8,7 +8,6 @@ class UserCreate(BaseModel):
     password: str = Field(min_length=8, max_length=128)     # bcrypt byte limit 72
 
 class UserRead(BaseModel):
-    id: UUID
     email: EmailStr
     created_at: datetime
 
