@@ -23,7 +23,7 @@ def me(current_user: User = Depends(get_current_user), service: UserService = De
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-@router.patch("/", response_model=User)
+@router.patch("/", response_model=UserPatch)
 def edit_user(data: UserPatch, current_user: User = Depends(get_current_user), service: UserService = Depends(get_user_service), db: Session = Depends(get_db)):
     try:
         user = service.edit_user(current_user.id, data, db)

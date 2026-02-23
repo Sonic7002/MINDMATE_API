@@ -1,12 +1,12 @@
 from uuid import UUID
 from datetime import datetime
-from pydantic import BaseModel, ValidationInfo
+from pydantic import BaseModel, ValidationInfo, field_validator
 from typing import Optional
 
 class ConvoCreate(BaseModel):
     name : str
 
-    @ValidationInfo("name")
+    @field_validator("name")
     @classmethod
     def not_empty(cls, text: str, info: ValidationInfo):
         if not text.strip():
