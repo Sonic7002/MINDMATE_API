@@ -15,4 +15,4 @@ def get_convo_service() -> ConvoService:
     return ConvoService(convo_repo)
 
 def get_msg_service() -> MsgService:
-    return MsgService()
+    return MsgService(msg_repo, convo_repo)

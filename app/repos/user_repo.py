@@ -7,7 +7,7 @@ from ..schemas.user import UserCreate
 
 class UserRepo:
     def create(self, db: Session, data: UserCreate) -> User | None:
-        user = User(name = data.name, email = data.email, role = data.role)
+        user = User(email = data.email)
         user.set_password(data.password)
         try:
             db.add(user)

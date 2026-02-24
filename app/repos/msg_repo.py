@@ -5,7 +5,7 @@ from ..schemas.msg import MsgCreate, MsgRole
 
 class MsgRepo:
     def create(self, db: Session, user_id:UUID, convo_id: UUID, data: MsgCreate) -> Msg | None:
-        msg = Msg(user_id = user_id, convo_id = convo_id, role = data.role, content= data.content)
+        msg = Msg(user_id = str(user_id), convo_id = str(convo_id), role = data.role, content= data.content)
         db.add(msg)
         db.commit()
         db.refresh(msg)
