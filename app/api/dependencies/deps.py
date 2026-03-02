@@ -12,7 +12,7 @@ def get_user_service() -> UserService:
     return UserService(user_repo)
 
 def get_convo_service() -> ConvoService:
-    return ConvoService(convo_repo)
+    return ConvoService(convo_repo, msg_repo)
 
 def get_msg_service() -> MsgService:
     return MsgService(msg_repo, convo_repo)

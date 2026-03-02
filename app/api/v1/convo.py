@@ -18,9 +18,18 @@ def create_convo(data: ConvoCreate, current_user: User = Depends(get_current_use
 def get_all_convos(current_user: User = Depends(get_current_user), service: ConvoService = Depends(get_convo_service), db: Session = Depends(get_db)):
     return service.get_convos(current_user.id, db)
 
-@router.patch("/", response_model=ConvoRead)
-def edit_convo(convo_id:UUID, data: ConvoPatch, current_user: User = Depends(get_current_user), service: ConvoService = Depends(get_convo_service), db: Session = Depends(get_db)):
-    convo = service.edit_convo(current_user.id, convo_id, data, db)
-    if not convo:
+@router.patch("/{convo_id}", response_model=ConvoRead)
+def edit_convo(convo_id: UUID, data: ConvoPatch, current_user: User = Depends(get_current_user), service: ConvoService = Depends(get_convo_service), db: Session = Depends(get_db)):
+    try:
+        convo = service.edit_convo(current_user.id, convo_id, data, db)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Invalid convo ID")
+    return convo
+
+@router.delete("/{convo_id}", response_model=ConvoRead)
+def delete_convo(convo_id: UUID, current_user: User = Depends(get_current_user), service: ConvoService = Depends(get_convo_service), db: Session = Depends(get_db)):
+    try:
+        convo = service.delete_convo(current_user.id, convo_id, db)
+    except ValueError:
         raise HTTPException(status_code=404, detail="Invalid convo ID")
     return convo

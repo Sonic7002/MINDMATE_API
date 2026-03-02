@@ -21,3 +21,9 @@ class ConvoRepo:
         db.commit()
         db.refresh(convo)
         return convo
+
+    def delete(self, db: Session, convo_id: UUID):
+        convo = self.get_by_id(db, convo_id)
+        db.delete(convo)
+        db.commit()
+        return convo

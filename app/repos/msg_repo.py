@@ -31,3 +31,8 @@ class MsgRepo:
 
         db.commit()
         return deleted_count
+
+    def delete_msg_by_convo(self, db: Session, convo_id: UUID):
+        db.query(Msg).filter(Msg.convo_id == str(convo_id)).delete(synchronize_session=False)
+        db.commit()
+        
