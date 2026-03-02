@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from ..models.msg import Msg
 from ..repos.msg_repo import MsgRepo
 from ..repos.convo_repo import ConvoRepo
-from ..schemas.msg import MsgCreate, MsgRole
+from ..schemas.msg import MsgCreate, MsgRole, MsgDelete
 from ..ai.response import generate_response
 
 class MsgService:
@@ -34,3 +34,10 @@ class MsgService:
         if not convo or convo.user_id != user_id:
             raise ValueError("Invalid convo id")
         return self.msg_repo.get_by_convo_id(db, convo_id)
+    
+    def delete_msg(self, user_id: UUID, data: MsgDelete, db: Session) -> int:
+        msg = self.msg_repo.get_msg(db, data.convo_id, data.msg_id)
+        if msg is None or msg.user_id != str(user_id):
+            raise ValueError("Messege not found")
+        
+        return self.msg_repo.delete_msg(db, data.convo_id, msg)

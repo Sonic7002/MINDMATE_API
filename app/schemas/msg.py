@@ -17,8 +17,13 @@ class MsgCreate(BaseModel):
         if not text.strip():
             raise ValueError(f"{info.field_name} must not be empty")
         return text
+    
+class MsgDelete(BaseModel):
+    msg_id: UUID
+    convo_id: UUID
 
 class MsgRead(BaseModel):
+    id: UUID
     user_id: UUID
     convo_id: UUID
     role: MsgRole

@@ -16,4 +16,18 @@ class MsgRepo:
 
     def get_by_convo_id_5(self, db: Session, convo_id: UUID) -> list[Msg]:
         msgs = db.query(Msg).filter(Msg.convo_id == str(convo_id)).order_by(Msg.created_at.desc()).limit(5).all()
-        return msgs.reverse()
+        msgs.reverse()
+        return msgs
+    
+    def get_msg(self, db: Session, convo_id: UUID, msg_id: UUID) -> Msg | None:
+        msg = (db.query(Msg).filter(Msg.id == str(msg_id)).filter(Msg.convo_id == str(convo_id)).first())
+
+        if not msg:
+            return None
+        return msg
+
+    def delete_msg(self, db: Session, convo_id: UUID, target_msg: Msg) -> int:
+        deleted_count = (db.query(Msg).filter(Msg.convo_id == str(convo_id)).filter(Msg.created_at >= target_msg.created_at).delete(synchronize_session=False))
+
+        db.commit()
+        return deleted_count
