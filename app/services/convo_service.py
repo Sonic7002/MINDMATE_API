@@ -4,6 +4,7 @@ from ..models.convo import Convo
 from ..repos.convo_repo import ConvoRepo
 from ..repos.msg_repo import MsgRepo
 from ..schemas.convo import ConvoCreate, ConvoPatch
+from ..ai.response import generate_convo
 
 class ConvoService:
     def __init__(self, repo: ConvoRepo, msg_repo: MsgRepo):
@@ -11,7 +12,8 @@ class ConvoService:
         self.msg_repo = msg_repo
 
     def create_convo(self, user_id: UUID, data: ConvoCreate, db: Session) -> Convo:
-        return self.repo.create(db, user_id, data)
+        name = generate_convo(data.data)
+        return self.repo.create(db, user_id, name)
 
     def get_convo(self, convo_id: UUID, db: Session) -> Convo | None:
         return self.repo.get_by_id(db, convo_id)

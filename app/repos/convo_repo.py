@@ -4,8 +4,8 @@ from ..models.convo import Convo
 from ..schemas.convo import ConvoCreate
 
 class ConvoRepo:
-    def create(self, db: Session, user_id: UUID, data: ConvoCreate) -> Convo | None:
-        convo = Convo(name = data.name, user_id = user_id)
+    def create(self, db: Session, user_id: UUID, name: str) -> Convo | None:
+        convo = Convo(name = name, user_id = user_id)
         db.add(convo)
         db.commit()
         db.refresh(convo)

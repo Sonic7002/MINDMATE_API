@@ -45,3 +45,22 @@ def generate_response(msgs: list[Msg]) -> MsgCreate:
     response = client.models.generate_content(model="gemini-2.5-flash-lite", contents=data)
     reply = MsgCreate(role=MsgRole.MODEL, content=response.text)
     return reply
+
+def generate_convo(data: str) -> str:
+    client = genai.Client()
+    prompt = f"""You are generating a title for a chat conversation.
+
+Given the first message of the conversation, generate a short, clear, descriptive title.
+
+Rules:
+- Maximum 4 words
+- No punctuation at the end
+- No quotes
+- No emojis
+- No extra commentary
+- Output ONLY the title
+
+First message:
+{data}"""
+    response = client.models.generate_content(model="gemini-2.5-flash-lite", contents=prompt)
+    return(response.text)

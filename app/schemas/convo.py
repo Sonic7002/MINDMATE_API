@@ -4,9 +4,9 @@ from pydantic import BaseModel, ValidationInfo, field_validator
 from typing import Optional
 
 class ConvoCreate(BaseModel):
-    name : str
+    data : str
 
-    @field_validator("name")
+    @field_validator("data")
     @classmethod
     def not_empty(cls, text: str, info: ValidationInfo):
         if not text.strip():
