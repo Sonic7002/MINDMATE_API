@@ -12,7 +12,10 @@ router = APIRouter(prefix="/convos", tags=["convos"])
 
 @router.post("/", response_model=ConvoRead)
 def create_convo(data: ConvoCreate, current_user: User = Depends(get_current_user), service: ConvoService = Depends(get_convo_service), db: Session = Depends(get_db)):
-    return service.create_convo(current_user.id, data, db)
+    try:
+        return service.create_convo(current_user.id, data, db)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/", response_model=list[ConvoRead])
 def get_all_convos(current_user: User = Depends(get_current_user), service: ConvoService = Depends(get_convo_service), db: Session = Depends(get_db)):
