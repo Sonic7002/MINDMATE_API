@@ -65,6 +65,8 @@ def generate_ai_response(prompt: str, msgs: list[Msg]) -> str:
                 used_model = model
                 print("used model:", used_model)
                 break
+            else:
+                continue
         except:
             continue
 
@@ -79,7 +81,7 @@ def generate_ai_response(prompt: str, msgs: list[Msg]) -> str:
 
 def generate_ai_convo(prompt: str) -> str:
     try:
-        response = client.models.generate_content(model="gemini-2.5-flash-lite", contents="Explain how AI works in a few words")
+        response = client.models.generate_content(model="gemini-2.5-flash-lite", contents=prompt)
     except:
         raise ValueError("An error has occured")
     return response.text
